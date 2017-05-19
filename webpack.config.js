@@ -8,8 +8,10 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'js/[name].js'
+        filename: 'js/[name].js',
+        publicPath: '/dist/'
     },
+    // devtool: "source-map",
     module: {
         loaders: [
             {
@@ -22,8 +24,13 @@ module.exports = {
             }, {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract({fallback: 'style-loader',
-                  use: ['css-loader', 'sass-loader']})
+                  use: ['css-loader?url=false', 'resolve-url-loader', 'sass-loader']})
+                  // use: ['css-loader?url=false', 'resolve-url-loader', 'sass-loader?sourceMap']})
             },
+            {
+                test: /\.(png|jpg|gif)$/,
+                loader: "file-loader?name=img/[name].[ext]"
+            }
         ]
     },
 
@@ -31,8 +38,8 @@ module.exports = {
         colors: true
     },
     plugins: [
-      new ExtractTextPlugin("css/style.css")
+      new ExtractTextPlugin("css/[name].css")
     ],
-    watch: true
+    watch: false
     // devtool: 'source-map'
 };
